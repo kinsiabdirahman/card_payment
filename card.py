@@ -1,4 +1,3 @@
-
 # import pandas as pd
 import calendar
 
@@ -12,7 +11,7 @@ def solution(A, D):
     # Split the dates and amounts
     for date, amount in zip(D, A):
         # Check for the month by splitting the date
-        # Get month and then convert to an integer for finding mon
+        # Get month and then convert to an integer for finding month
         month = int(date.split('-')[1])
         # Update the account balance with the transaction amount
         acc_balance += amount
@@ -21,10 +20,23 @@ def solution(A, D):
             monthly_expenses[month]['total'] += amount
             monthly_expenses[month]['count'] += 1
 
+    # Check if the fee should be subtracted for each month
+    for month, expenses_info in monthly_expenses.items():
+        total_expenses = expenses_info['total']
+        payments_count = expenses_info['count']
+
+        # Deduct the fee only if there were at least three card payments with a total cost of at least 100
+        if payments_count >= 3 and total_expenses < -100:
+            acc_balance -= 5
+
+    # Deduct the fee for each month
+    acc_balance -= 5 * 12
+
     return acc_balance
 
 # TEST CASE:
 print(solution([100, 100, 100, -10], ["2020-12-31", "2020-12-22", "2020-12-03", "2020-12-29"]))
+
                 # Check if the total card payments are less than -100 for any month
     # for month, expenses_info in monthly_expenses.items():
     #     total_expenses = expenses_info['total']
